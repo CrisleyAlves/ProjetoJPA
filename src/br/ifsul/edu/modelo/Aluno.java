@@ -1,15 +1,21 @@
 package br.ifsul.edu.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,7 +48,22 @@ public class Aluno implements Serializable{
     @Temporal(TemporalType.DATE)
     @NotNull
     private Calendar nascimento;
-
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "aluno_disciplina", 
+            joinColumns = @JoinColumn(
+                    name = "aluno", 
+                    referencedColumnName = "id", 
+                    nullable = false),
+            inverseJoinColumns = @JoinColumn(
+                    name = "disciplina", 
+                    referencedColumnName = "id", 
+                    nullable = false)
+    
+    )
+    private List<Disciplina> disciplinas = new ArrayList<>();
+    
     public Integer getId() {
         return id;
     }
@@ -98,6 +119,14 @@ public class Aluno implements Serializable{
             return false;
         }
         return true;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
     }
 
 }
