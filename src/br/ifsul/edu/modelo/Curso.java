@@ -1,7 +1,9 @@
 package br.ifsul.edu.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +27,8 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "curso")
 public class Curso implements Serializable{
+    
+    //LIST DE DISCPLINA DENTRO DO CURSO
     
     @Id
     @SequenceGenerator(name = "seq_curso", sequenceName = "seq_curso_id", allocationSize = 1)
@@ -57,6 +61,17 @@ public class Curso implements Serializable{
     @JoinColumn(name = "instituicao", referencedColumnName = "id", nullable = false)
     @ForeignKey(name = "fk_instituicao")
     private Instituicao instituicao;
+    
+    private List<Disciplina> disciplinas  = new ArrayList<>();
+    
+     public void adicionarDisciplina(Disciplina obj){
+        obj.setCurso(this);
+        this.getDisciplinas().add(obj);
+    }
+    
+    public void removerDisciplina(int index){
+        this.getDisciplinas().remove(index);
+    }
 
     public Integer getId() {
         return id;
@@ -139,6 +154,14 @@ public class Curso implements Serializable{
 
     public void setInstituicao(Instituicao instituicao) {
         this.instituicao = instituicao;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
     }
     
     

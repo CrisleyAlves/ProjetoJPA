@@ -70,6 +70,17 @@ public class Disciplina implements Serializable{
     
     )
     private List<Aluno> alunos = new ArrayList<>();
+    
+    private List<Nota> notas  = new ArrayList<>();
+    
+    public void adicionarNota(Nota obj){
+        obj.setDisciplina(this);
+        this.getNotas().add(obj);
+    }
+    
+    public void removerDisciplina(int index){
+        this.getNotas().remove(index);
+    }
 
     public Integer getId() {
         return id;
@@ -152,5 +163,13 @@ public class Disciplina implements Serializable{
 
     public void setAlunos(List<Aluno> alunos) {
         this.alunos = alunos;
+    }
+
+    public List<Nota> getNotas() {
+        return notas;
+    }
+
+    public void setNotas(List<Nota> notas) {
+        this.notas = notas;
     }
 }
