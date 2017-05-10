@@ -1,6 +1,7 @@
 package br.ifsul.edu.modelo;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,7 +37,6 @@ public class Nota implements Serializable{
     
     @ManyToOne
     @JoinColumn(name = "aluno", referencedColumnName = "id", nullable = false)
-    @ForeignKey(name = "fk_aluno")
     private Aluno aluno;
     
     @ManyToOne

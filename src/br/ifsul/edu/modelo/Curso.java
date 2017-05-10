@@ -5,13 +5,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -62,15 +65,16 @@ public class Curso implements Serializable{
     @ForeignKey(name = "fk_instituicao")
     private Instituicao instituicao;
     
-    private List<Disciplina> disciplinas  = new ArrayList<>();
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)//Informar o nome do ATRIBUTO na tabela, do ATRIBUTO, CRISLEY!
+    private List<Disciplina> listaDisciplinas  = new ArrayList<>();
     
      public void adicionarDisciplina(Disciplina obj){
         obj.setCurso(this);
-        this.getDisciplinas().add(obj);
+        this.getListaDisciplinas().add(obj);
     }
     
     public void removerDisciplina(int index){
-        this.getDisciplinas().remove(index);
+        this.getListaDisciplinas().remove(index);
     }
 
     public Integer getId() {
@@ -156,13 +160,12 @@ public class Curso implements Serializable{
         this.instituicao = instituicao;
     }
 
-    public List<Disciplina> getDisciplinas() {
-        return disciplinas;
+    public List<Disciplina> getListaDisciplinas() {
+        return listaDisciplinas;
     }
 
-    public void setDisciplinas(List<Disciplina> disciplinas) {
-        this.disciplinas = disciplinas;
+    public void setListaDisciplinas(List<Disciplina> listaDisciplinas) {
+        this.listaDisciplinas = listaDisciplinas;
     }
-    
     
 }

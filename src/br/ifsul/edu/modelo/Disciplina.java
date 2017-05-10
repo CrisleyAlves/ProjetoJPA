@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -67,19 +69,20 @@ public class Disciplina implements Serializable{
                     name = "aluno", 
                     referencedColumnName = "id", 
                     nullable = false)
-    
     )
+    
     private List<Aluno> alunos = new ArrayList<>();
     
-    private List<Nota> notas  = new ArrayList<>();
+    @OneToMany(mappedBy = "disciplina", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Nota> listaNotas  = new ArrayList<>();
     
     public void adicionarNota(Nota obj){
         obj.setDisciplina(this);
-        this.getNotas().add(obj);
+        this.getListaNotas().add(obj);
     }
     
     public void removerDisciplina(int index){
-        this.getNotas().remove(index);
+        this.getListaNotas().remove(index);
     }
 
     public Integer getId() {
@@ -165,11 +168,11 @@ public class Disciplina implements Serializable{
         this.alunos = alunos;
     }
 
-    public List<Nota> getNotas() {
-        return notas;
+    public List<Nota> getListaNotas() {
+        return listaNotas;
     }
 
-    public void setNotas(List<Nota> notas) {
-        this.notas = notas;
+    public void setListaNotas(List<Nota> listaNotas) {
+        this.listaNotas = listaNotas;
     }
 }
